@@ -20,3 +20,17 @@ create table game (
   foreign key (console_id) references console(id),
   constraint uc_game unique (title, console_id)
 );
+
+-- changeset thiagov:3
+insert into console(name)
+values
+    ('Nintendo Switch'),
+    ('Nintendo Wii'),
+    ('Nintendo 3DS'),
+    ('PlayStation 4'),
+    ('PlayStation 5'),
+    ('PlayStation Vita'),
+    ('Xbox One S'),
+    ('Xbox 360'),
+    ('Sega Master System'),
+    ('Sega Saturn');
