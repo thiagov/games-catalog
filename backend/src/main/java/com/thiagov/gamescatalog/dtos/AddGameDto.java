@@ -6,8 +6,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class AddGameDto {
 
     @NotNull(message = "Title must not be empty")
@@ -20,7 +18,6 @@ public class AddGameDto {
     @NotNull(message = "Console must not be empty")
     private Integer consoleId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate completionDate;
 
     private String personalNotes;

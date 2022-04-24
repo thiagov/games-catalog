@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Console } from 'src/app/classes/console.class';
+import { ConsoleService } from 'src/app/services/console.service';
+import { GameService } from 'src/app/services/game.service';
 
 @Component({
   selector: 'app-add-game',
@@ -15,23 +17,28 @@ export class AddGameComponent implements OnInit {
   addGameForm = this.fb.group({
     title: ['', Validators.required],
     year: [undefined, [Validators.min(1970), Validators.max((new Date()).getFullYear())]],
-    console: [undefined, Validators.required],
+    consoleId: [undefined, Validators.required],
     completionDate: [],
     personalNotes: ['']
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private consoleService: ConsoleService,
+    private gameService: GameService) { }
 
   ngOnInit(): void {
-    this.allConsoles = [
-      new Console(1, 'Console 1'),
-      new Console(2, 'Console 2'),
-      new Console(3, 'Console 3'),
-    ]
+    this.consoleService.getAllConsoles().subscribe(
+      consolesList => this.allConsoles = consolesList
+    );
   }
 
   onSubmit() {
-    console.log(this.addGameForm.value);
+    this.gameService.addNewGame(this.addGameForm.value).subscribe(
+      addedGame => {
+        console.log(addedGame);
+      }
+    );
   }
 
   onGameCompletedChanged() {
