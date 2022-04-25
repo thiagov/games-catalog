@@ -13,4 +13,8 @@ export class GameService {
   addNewGame(addNewGameData: any): Observable<GameInfo> {
     return this.http.post<GameInfo>('/api/games', addNewGameData);
   }
+
+  getAllGames(): Observable<GameInfo[]> {
+    return this.http.get<GameInfo[]>('/api/games');
+  }
 }

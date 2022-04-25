@@ -6,6 +6,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,7 +16,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddGameComponent } from './components/add-game/add-game.component';
 import { GameListComponent } from './components/game-list/game-list.component';
 import { GameComponent } from './components/game/game.component';
-import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -22,19 +23,20 @@ import { HomeComponent } from './components/home/home.component';
     AddGameComponent,
     GameListComponent,
     GameComponent,
-    HomeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

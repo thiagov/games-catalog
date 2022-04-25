@@ -1,3 +1,7 @@
-<p>game-list works!</p>
+<div class="container">
+  <app-add-game (newGameEvent)="addGame($event)"></app-add-game>
 
-<app-game></app-game>
+  <div *ngFor="let game of allAddedGames">
+    <app-game [game]="game"></app-game>
+  </div>
+</div>
