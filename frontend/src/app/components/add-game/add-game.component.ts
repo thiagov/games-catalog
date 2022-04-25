@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroupDirective, Validators } from '@angular/forms';
 import { Console } from 'src/app/classes/console.class';
 import { ConsoleService } from 'src/app/services/console.service';
 import { GameService } from 'src/app/services/game.service';
+import { GameInfo } from 'src/app/classes/game-info.class';
 
 @Component({
   selector: 'app-add-game',
@@ -11,6 +12,8 @@ import { GameService } from 'src/app/services/game.service';
 })
 export class AddGameComponent implements OnInit {
 
+  @Output() newGameEvent = new EventEmitter<GameInfo>();
+  @ViewChild('formDirective') formDirective!: FormGroupDirective;
   allConsoles: Console[] = [];
   maxCompletionDate = new Date;
   isGameCompleted = false;
@@ -34,11 +37,16 @@ export class AddGameComponent implements OnInit {
   }
 
   onSubmit() {
-    this.gameService.addNewGame(this.addGameForm.value).subscribe(
-      addedGame => {
-        console.log(addedGame);
-      }
-    );
+    if (this.addGameForm.valid) {
+      this.gameService.addNewGame(this.addGameForm.value).subscribe(
+        addedGame => {
+          console.log(addedGame);
+          this.newGameEvent.emit(addedGame);
+          this.addGameForm.reset();
+          this.formDirective.resetForm();
+        }
+      );
+    }
   }
 
   onGameCompletedChanged() {
