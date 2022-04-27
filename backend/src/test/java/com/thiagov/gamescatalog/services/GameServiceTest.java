@@ -24,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import com.thiagov.gamescatalog.dtos.AddGameDto;
 import com.thiagov.gamescatalog.dtos.GameDto;
 import com.thiagov.gamescatalog.exceptions.ConsoleNotFoundException;
+import com.thiagov.gamescatalog.exceptions.DuplicatedGameException;
 import com.thiagov.gamescatalog.models.Console;
 import com.thiagov.gamescatalog.models.Game;
 import com.thiagov.gamescatalog.repositories.ConsoleRepository;
@@ -42,7 +43,7 @@ class GameServiceTest {
     private ConsoleRepository consoleRepository;
 
     @Test
-    public void shouldSaveAndReturnGameWhenDataIsOk() throws ConsoleNotFoundException {
+    public void shouldSaveAndReturnGameWhenDataIsOk() throws ConsoleNotFoundException, DuplicatedGameException {
         Console console = createConsole(1, "Xbox");
         AddGameDto addGameDto = createAddGameDto("Test Game", (short) 2010, console.getId(), LocalDate.now(), "Some notes");
 

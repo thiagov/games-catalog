@@ -12,6 +12,7 @@ public class AddGameDto {
     @Size(min = 1, max = 100, message = "Title must be between 1 and 100 characters long") 
     private String title;
 
+    @NotNull(message = "Year must not be null")
     @Min(value = 1970, message = "Year must not be lower than 1970")
     private Short year;
 

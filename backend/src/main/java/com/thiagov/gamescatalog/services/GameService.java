@@ -5,12 +5,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.thiagov.gamescatalog.dtos.AddGameDto;
 import com.thiagov.gamescatalog.dtos.GameDto;
 import com.thiagov.gamescatalog.exceptions.ConsoleNotFoundException;
+import com.thiagov.gamescatalog.exceptions.DuplicatedGameException;
 import com.thiagov.gamescatalog.models.Console;
 import com.thiagov.gamescatalog.models.Game;
 import com.thiagov.gamescatalog.repositories.ConsoleRepository;
@@ -28,20 +30,26 @@ public class GameService {
         this.consoleRepository = consoleRepository;
     }
 
-    public GameDto addNewGame(AddGameDto addGameDto) throws ConsoleNotFoundException {
+    public GameDto addNewGame(AddGameDto addGameDto) throws ConsoleNotFoundException,
+        DuplicatedGameException {
         Optional<Console> console = consoleRepository.findById(addGameDto.getConsoleId());
         if (!console.isPresent()) {
             throw new ConsoleNotFoundException("Console with id "
                     + addGameDto.getConsoleId() + " not found.");
         }
-        Game gameToCreate = new Game(
-                addGameDto.getTitle(),
-                addGameDto.getYear(),
-                console.get(),
-                addGameDto.getCompletionDate(),
-                addGameDto.getPersonalNotes());
-        gameToCreate = gameRepository.save(gameToCreate);
-        return new GameDto(gameToCreate);
+        try {
+            Game gameToCreate = new Game(
+                    addGameDto.getTitle(),
+                    addGameDto.getYear(),
+                    console.get(),
+                    addGameDto.getCompletionDate(),
+                    addGameDto.getPersonalNotes());
+            gameToCreate = gameRepository.save(gameToCreate);
+            return new GameDto(gameToCreate);
+        } catch(DataIntegrityViolationException exception) {
+            throw new DuplicatedGameException("Game with title " + addGameDto.getTitle()
+                    + " on console " + console.get().getName() + " already exists.");
+        }
     }
 
     public List<GameDto> getAllGames() {

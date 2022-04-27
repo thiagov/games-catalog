@@ -12,7 +12,7 @@ create table console (
 create table game (
   id int auto_increment,
   title varchar(100) not null,
-  year smallint(4),
+  year smallint(4) not null,
   console_id int not null,
   completion_date date,
   personal_notes text,

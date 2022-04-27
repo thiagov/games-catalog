@@ -29,6 +29,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thiagov.gamescatalog.dtos.GameDto;
 import com.thiagov.gamescatalog.exceptions.ConsoleNotFoundException;
+import com.thiagov.gamescatalog.exceptions.DuplicatedGameException;
 import com.thiagov.gamescatalog.services.GameService;
 
 @WebMvcTest({GameController.class})
@@ -77,7 +78,7 @@ class GameControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("$.title", is("Title must be between 1 and 100 characters long")));
+            .andExpect(jsonPath("$[0]", is("title: Title must be between 1 and 100 characters long")));
     }
 
     @Test
@@ -95,7 +96,7 @@ class GameControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("$.title", is("Title must not be empty")));
+            .andExpect(jsonPath("$[0]", is("title: Title must not be empty")));
     }
 
     @Test
@@ -114,7 +115,7 @@ class GameControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("$.year", is("Year must not be lower than 1970")));
+            .andExpect(jsonPath("$[0]", is("year: Year must not be lower than 1970")));
     }
 
     @Test
@@ -132,7 +133,25 @@ class GameControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("$.consoleId", is("Console must not be empty")));
+            .andExpect(jsonPath("$[0]", is("consoleId: Console must not be empty")));
+    }
+
+    @Test
+    public void shouldReturnErrorWhenYearIsEmpty() throws JsonProcessingException, Exception {
+        Map<String,Object> body = new HashMap<>();
+        body.put("title", "Mario");
+        body.put("consoleId", "124");
+        body.put("completionDate", "2020-03-20");
+        body.put("personalNotes", "My notes");
+
+        this.mockMvc
+            .perform(post("/api/games")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(body))
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType("application/json"))
+            .andExpect(jsonPath("$[0]", is("year: Year must not be null")));
     }
 
     @Test
@@ -145,6 +164,26 @@ class GameControllerTest {
         body.put("personalNotes", "My notes");
 
         when(gameService.addNewGame(any())).thenThrow(ConsoleNotFoundException.class);
+
+        this.mockMvc
+            .perform(post("/api/games")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(body))
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType("application/json"));
+    }
+
+    @Test
+    public void shouldReturnBadRequestWhenGameAlreadyExists() throws JsonProcessingException, Exception {
+        Map<String,Object> body = new HashMap<>();
+        body.put("title", "Mario");
+        body.put("year", "2017");
+        body.put("consoleId", "124");
+        body.put("completionDate", "2020-03-20");
+        body.put("personalNotes", "My notes");
+
+        when(gameService.addNewGame(any())).thenThrow(DuplicatedGameException.class);
 
         this.mockMvc
             .perform(post("/api/games")

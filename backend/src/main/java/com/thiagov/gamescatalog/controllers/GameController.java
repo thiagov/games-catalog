@@ -1,9 +1,8 @@
 package com.thiagov.gamescatalog.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.thiagov.gamescatalog.dtos.AddGameDto;
 import com.thiagov.gamescatalog.dtos.GameDto;
 import com.thiagov.gamescatalog.exceptions.ConsoleNotFoundException;
+import com.thiagov.gamescatalog.exceptions.DuplicatedGameException;
 import com.thiagov.gamescatalog.services.GameService;
 
 @RestController
@@ -42,27 +42,28 @@ public class GameController {
     }
 
     @PostMapping
-    public GameDto addNewGame(@Valid @RequestBody AddGameDto addGameDto) throws ConsoleNotFoundException {
+    public GameDto addNewGame(@Valid @RequestBody AddGameDto addGameDto) throws ConsoleNotFoundException,
+        DuplicatedGameException {
         return gameService.addNewGame(addGameDto);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Map<String, String> handleException(MethodArgumentNotValidException exception) throws IOException {
-        Map<String, String> ret = new HashMap<>();
+    public List<String> handleException(MethodArgumentNotValidException exception) throws IOException {
+        List<String> ret = new ArrayList<>();
         for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
-            ret.put(fieldError.getField(), fieldError.getDefaultMessage());
+            ret.add(fieldError.getField() + ": " + fieldError.getDefaultMessage());
         }
         return ret;
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({ConsoleNotFoundException.class, DuplicatedGameException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Map<String, String> handleException(ConsoleNotFoundException exception) throws IOException {
-        Map<String, String> ret = new HashMap<>();
-        ret.put("consoleId", exception.getMessage());
+    public List<String> handleException(Exception exception) {
+        List<String> ret = new ArrayList<>();
+        ret.add(exception.getMessage());
         return ret;
     }
 }
