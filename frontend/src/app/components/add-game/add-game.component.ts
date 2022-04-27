@@ -19,11 +19,13 @@ export class AddGameComponent implements OnInit {
   isGameCompleted = false;
   addGameForm = this.fb.group({
     title: ['', Validators.required],
-    year: [undefined, [Validators.min(1970), Validators.max((new Date()).getFullYear())]],
+    year: [undefined, [Validators.required, Validators.min(1970), Validators.max((new Date()).getFullYear())]],
     consoleId: [undefined, Validators.required],
     completionDate: [],
     personalNotes: ['']
   });
+  serverErrors: string[] = [];
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -37,15 +39,24 @@ export class AddGameComponent implements OnInit {
   }
 
   onSubmit() {
+    this.serverErrors = [];
     if (this.addGameForm.valid) {
-      this.gameService.addNewGame(this.addGameForm.value).subscribe(
-        addedGame => {
-          console.log(addedGame);
+      this.isLoading = true;
+      this.gameService.addNewGame(this.addGameForm.value).subscribe({
+        next: addedGame => {
           this.newGameEvent.emit(addedGame);
           this.addGameForm.reset();
           this.formDirective.resetForm();
-        }
-      );
+        },
+        error: errorData => {
+          if (errorData.status === 400) {
+            this.serverErrors = errorData.error;
+          } else {
+            this.serverErrors = ['Something went wrong.'];
+          }
+        },
+        complete: () => this.isLoading = false
+      });
     }
   }
 

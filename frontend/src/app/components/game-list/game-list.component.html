@@ -1,7 +1,31 @@
-<div class="container">
-  <app-add-game (newGameEvent)="addGame($event)"></app-add-game>
-
-  <div *ngFor="let game of allAddedGames">
-    <app-game [game]="game"></app-game>
+<div class="title">
+  Game Catalog
+</div>
+<div class="content">
+  <div *ngIf="this.isLoading" class="loading">
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-4 col-12-sm">
+        <app-add-game (newGameEvent)="addGame($event)"></app-add-game>
+      </div>
+      <div class="col-8 col-12-sm">
+        <div *ngIf="this.allAddedGames.length > 0" class="results">
+          <div class="filter">
+            <mat-form-field>
+              <mat-label>Filter</mat-label>
+              <input matInput id="filter" type="text" class="w-100"/>
+            </mat-form-field>
+          </div>
+          <div class="result-list">
+            <app-game *ngFor="let game of allAddedGames"[game]="game"></app-game>
+          </div>
+        </div>
+        <div *ngIf="!this.isLoading && this.allAddedGames.length === 0" class="no-result">
+          <div class="result-text">Could't find any games.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

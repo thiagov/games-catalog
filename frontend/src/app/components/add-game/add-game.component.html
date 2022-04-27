@@ -1,43 +1,68 @@
-<form [formGroup]="addGameForm" (ngSubmit)="onSubmit()" #formDirective="ngForm">
-  <mat-form-field>
-    <mat-label>Title</mat-label>
-    <input matInput id="title" type="text" formControlName="title"/>
-    <mat-error *ngIf="addGameForm.get('title')?.hasError('required')">You must enter a title</mat-error>
-  </mat-form-field>
+<div class="fields">
+  <div class="w-100">
+    <form [formGroup]="addGameForm" (ngSubmit)="onSubmit()" #formDirective="ngForm">
+      <div class="title field">Add a new game</div>
 
-  <mat-form-field>
-    <mat-label>Year</mat-label>
-    <input matInput id="year" type="number" formControlName="year"/>
-    <mat-error *ngIf="addGameForm.get('year')?.hasError('min')">You can't enter a year before 1970</mat-error>
-    <mat-error *ngIf="addGameForm.get('year')?.hasError('max')">You can't enter a year in the future</mat-error>
-  </mat-form-field>
+      <div *ngFor="let error of serverErrors" class="error">
+        {{error}}
+      </div>
 
-  <mat-form-field>
-    <mat-label>Console</mat-label>
-    <mat-select formControlName="consoleId">
-      <mat-option *ngFor="let console of allConsoles" [value]="console.id">
-        {{console.name}}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="addGameForm.get('consoleId')?.hasError('required')">You must select a console</mat-error>
-  </mat-form-field>
+      <div class="field">
+        <mat-form-field>
+          <mat-label>Title</mat-label>
+          <input matInput id="title" type="text" formControlName="title" class="w-100"/>
+          <mat-error *ngIf="addGameForm.get('title')?.hasError('required')">You must enter a title</mat-error>
+        </mat-form-field>
+      </div>
 
-  <mat-slide-toggle [checked]="isGameCompleted" (change)="onGameCompletedChanged()">Completed</mat-slide-toggle>
+      <div class="field">
+        <mat-form-field>
+          <mat-label>Year</mat-label>
+          <input matInput id="year" type="number" formControlName="year"/>
+          <mat-error *ngIf="addGameForm.get('year')?.hasError('min')">You can't enter a year before 1970</mat-error>
+          <mat-error *ngIf="addGameForm.get('year')?.hasError('max')">You can't enter a year in the future</mat-error>
+          <mat-error *ngIf="addGameForm.get('title')?.hasError('required')">You must enter a year</mat-error>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field *ngIf="isGameCompleted">
-    <mat-label>Date of completion</mat-label>
-    <input id="completionDate" matInput [max]="maxCompletionDate" [matDatepicker]="picker" formControlName="completionDate">
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="addGameForm.get('completionDate')?.hasError('matDatepickerMax')">You can't enter a year in the future</mat-error>
-  </mat-form-field>
+      <div class="field">
+        <mat-form-field>
+          <mat-label>Console</mat-label>
+          <mat-select formControlName="consoleId">
+            <mat-option *ngFor="let console of allConsoles" [value]="console.id">
+              {{console.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="addGameForm.get('consoleId')?.hasError('required')">You must select a console</mat-error>
+        </mat-form-field>
+      </div>
 
-  <mat-form-field>
-    <mat-label>Personal notes</mat-label>
-    <textarea matNativeControl id="personalNotes" formControlName="personalNotes">
-    </textarea>
-  </mat-form-field>
+      <div class="field">
+        <mat-slide-toggle [checked]="isGameCompleted" (change)="onGameCompletedChanged()">Completed</mat-slide-toggle>
+      </div>
 
-  <button mat-stroked-button type="submit">Add game</button>
-</form>
+      <div class="field">
+        <mat-form-field *ngIf="isGameCompleted">
+          <mat-label>Date of completion</mat-label>
+          <input id="completionDate" matInput [max]="maxCompletionDate" [matDatepicker]="picker" formControlName="completionDate">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="addGameForm.get('completionDate')?.hasError('matDatepickerMax')">You can't enter a year in the future</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="field">
+        <mat-form-field>
+          <mat-label>Personal notes</mat-label>
+          <textarea matNativeControl id="personalNotes" formControlName="personalNotes">
+          </textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="field">
+        <button mat-raised-button [class.loading]="this.isLoading" [disabled]="this.isLoading" color="primary" type="submit" class="w-100">Add game</button>
+      </div>
+    </form>
+  </div>
+</div>

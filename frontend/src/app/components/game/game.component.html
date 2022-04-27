@@ -1,1 +1,21 @@
-{{game | json}}
+<div class="game">
+  <div class="info" [class.has-note]="this.game.personalNotes">
+    <div class="picture bg{{this.type}}">{{this.initials}}</div>
+    <div class="data">
+      <div class="name">{{this.game.title}}</div>
+      <div class="other-data">
+        <div class="console">{{this.game.consoleName}}</div>
+        <div class="year">{{this.game.year}}</div>
+        <div class="age">{{this.ageText}}</div>
+      </div>
+      <div *ngIf="this.game.completionDate" class="finished">Completed on {{this.game.completionDate | date}}</div>
+      <div *ngIf="!this.game.completionDate" class="finished">Game not completed</div>
+    </div>
+  </div>
+  <div *ngIf="this.game.personalNotes" class="personal-notes">
+    <div class="title">
+      Personal notes:
+    </div>
+    <div class="content">{{this.game.personalNotes}}</div>
+  </div>
+</div>

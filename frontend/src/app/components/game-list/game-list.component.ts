@@ -10,13 +10,16 @@ import { GameInfo } from 'src/app/classes/game-info.class';
 export class GameListComponent implements OnInit {
 
   allAddedGames: GameInfo[] = [];
+  isLoading = false;
 
   constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
-    this.gameService.getAllGames().subscribe(
-      gamesList => this.allAddedGames = gamesList
-    );
+    this.isLoading = true;
+    this.gameService.getAllGames().subscribe({
+      next: gamesList => this.allAddedGames = gamesList,
+      complete: () => this.isLoading = false
+    });
   }
 
   addGame(newGame: GameInfo) {
