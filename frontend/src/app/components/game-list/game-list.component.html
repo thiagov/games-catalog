@@ -13,13 +13,20 @@
       <div class="col-8 col-12-sm">
         <div *ngIf="this.allAddedGames.length > 0" class="results">
           <div class="filter">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
             <mat-form-field>
               <mat-label>Filter</mat-label>
-              <input matInput id="filter" type="text" class="w-100"/>
+              <input matInput id="filter" type="text"
+                     [matAutocomplete]="auto" class="w-100"
+                     [formControl]="filterFormControl"/>
             </mat-form-field>
           </div>
           <div class="result-list">
-            <app-game *ngFor="let game of allAddedGames"[game]="game"></app-game>
+            <app-game *ngFor="let game of filteredGames | async"[game]="game"></app-game>
           </div>
         </div>
         <div *ngIf="!this.isLoading && this.allAddedGames.length === 0" class="no-result">

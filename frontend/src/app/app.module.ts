@@ -7,6 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,6 +38,7 @@ import { GameComponent } from './components/game/game.component';
     MatNativeDateModule,
     MatSlideToggleModule,
     MatButtonModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
