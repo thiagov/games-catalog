@@ -54,9 +54,8 @@ export class AddGameComponent implements OnInit {
           } else {
             this.serverErrors = ['Something went wrong.'];
           }
-        },
-        complete: () => this.isLoading = false
-      });
+        }
+      }).add(() => this.isLoading = false);
     }
   }
 

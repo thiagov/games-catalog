@@ -20,8 +20,8 @@
     "@angular/platform-browser": "~13.2.0",
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
+    "grid": "git+https://github.com/sgnl/grid.git",
     "rxjs": "~7.5.0",
-    "simplegrid": "^1.0.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

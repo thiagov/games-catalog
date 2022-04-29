@@ -50,9 +50,8 @@ export class GameListComponent implements OnInit {
           startWith(''),
           map(value => this._filterGames(value)),
         );
-      },
-      complete: () => this.isLoading = false
-    });
+      }
+    }).add(() => this.isLoading = false);
   }
 
   private _filterOptions(value: string): string[] {
