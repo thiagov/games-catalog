@@ -8,6 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -39,6 +40,7 @@ import { GameComponent } from './components/game/game.component';
     MatSlideToggleModule,
     MatButtonModule,
     MatAutocompleteModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
