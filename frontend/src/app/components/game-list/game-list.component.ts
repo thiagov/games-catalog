@@ -3,6 +3,7 @@ import { GameService } from 'src/app/services/game.service';
 import { GameInfo } from 'src/app/classes/game-info.class';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-game-list',
@@ -18,12 +19,26 @@ export class GameListComponent implements OnInit {
   filterFormControl = new FormControl('');
   isLoading = false;
 
-  constructor(private gameService: GameService) { }
+  constructor(
+    private gameService: GameService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this._getAllGames();
+  }
+
+  updateGames(newGame: GameInfo) {
+    if (newGame.id) {
+      this.snackBar.open("Game successfully added!", "", { duration: 3000 });
+      this._getAllGames();
+    }
+  }
+
+  private _getAllGames() {
     this.isLoading = true;
     this.gameService.getAllGames().subscribe({
       next: gamesList => {
+        this.filterFormControl.reset('');
         this.allAddedGames = gamesList;
         this.autocompleteOptions = gamesList.map(game => game.title);
 
@@ -38,10 +53,6 @@ export class GameListComponent implements OnInit {
       },
       complete: () => this.isLoading = false
     });
-  }
-
-  addGame(newGame: GameInfo) {
-    this.allAddedGames.push(newGame);
   }
 
   private _filterOptions(value: string): string[] {

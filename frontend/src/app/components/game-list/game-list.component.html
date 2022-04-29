@@ -8,7 +8,7 @@
   <div class="container">
     <div class="row">
       <div class="col-4 col-12-sm">
-        <app-add-game (newGameEvent)="addGame($event)"></app-add-game>
+        <app-add-game (newGameEvent)="updateGames($event)"></app-add-game>
       </div>
       <div class="col-8 col-12-sm">
         <div *ngIf="this.allAddedGames.length > 0" class="results">

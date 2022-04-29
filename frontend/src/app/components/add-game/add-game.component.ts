@@ -4,8 +4,6 @@ import { Console } from 'src/app/classes/console.class';
 import { ConsoleService } from 'src/app/services/console.service';
 import { GameService } from 'src/app/services/game.service';
 import { GameInfo } from 'src/app/classes/game-info.class';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
 
 @Component({
   selector: 'app-add-game',
@@ -32,8 +30,7 @@ export class AddGameComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private consoleService: ConsoleService,
-    private gameService: GameService,
-    private snackBar: MatSnackBar) { }
+    private gameService: GameService) { }
 
   ngOnInit(): void {
     this.consoleService.getAllConsoles().subscribe(
@@ -47,7 +44,6 @@ export class AddGameComponent implements OnInit {
       this.isLoading = true;
       this.gameService.addNewGame(this.addGameForm.value).subscribe({
         next: addedGame => {
-          this.snackBar.open("Game successfully added!", "", { duration: 3000 });
           this.newGameEvent.emit(addedGame);
           this.addGameForm.reset();
           this.formDirective.resetForm();
