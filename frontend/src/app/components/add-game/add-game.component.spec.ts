@@ -137,7 +137,7 @@ describe('AddGameComponent', () => {
 
   it('should emit added game when form submitted', fakeAsync(() => {
     fixture.detectChanges(); //ngOnInit
-    const newGameEventSpy = jest.spyOn(component.newGameEvent, 'emit');
+    jest.spyOn(component.newGameEvent, 'emit');
     component.addGameForm.get('title')?.setValue('Teste');
     component.addGameForm.get('year')?.setValue(2000);
     component.addGameForm.get('consoleId')?.setValue(1);
