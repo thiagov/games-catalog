@@ -12,6 +12,7 @@
           <mat-label>Title</mat-label>
           <input matInput id="title" type="text" formControlName="title" class="w-100"/>
           <mat-error *ngIf="addGameForm.get('title')?.hasError('required')">You must enter a title</mat-error>
+          <mat-error *ngIf="addGameForm.get('title')?.hasError('maxlength')">The title can not have more than 100 characters</mat-error>
         </mat-form-field>
       </div>
 

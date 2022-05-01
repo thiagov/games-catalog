@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from 'src/app/services/game.service';
-import { GameInfo } from 'src/app/classes/game-info.class';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GameService } from '../../services/game.service';
+import { GameInfo } from '../../classes/game-info.class';
 
 @Component({
   selector: 'app-game-list',

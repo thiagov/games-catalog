@@ -7,14 +7,15 @@ import { GameInfo } from 'src/app/classes/game-info.class';
   providedIn: 'root'
 })
 export class GameService {
+  readonly gamesUrl = '/api/games';
 
   constructor(private http: HttpClient) { }
 
   addNewGame(addNewGameData: any): Observable<GameInfo> {
-    return this.http.post<GameInfo>('/api/games', addNewGameData);
+    return this.http.post<GameInfo>(this.gamesUrl, addNewGameData);
   }
 
   getAllGames(): Observable<GameInfo[]> {
-    return this.http.get<GameInfo[]>('/api/games');
+    return this.http.get<GameInfo[]>(this.gamesUrl);
   }
 }

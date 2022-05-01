@@ -28,7 +28,5 @@ export class GameComponent implements OnInit {
       default:
         this.ageText = `${age} years old`;
     }
-
   }
-
 }

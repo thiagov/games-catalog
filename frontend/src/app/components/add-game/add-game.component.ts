@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroupDirective, Validators } from '@angular/forms';
-import { Console } from 'src/app/classes/console.class';
-import { ConsoleService } from 'src/app/services/console.service';
-import { GameService } from 'src/app/services/game.service';
-import { GameInfo } from 'src/app/classes/game-info.class';
+import { Console } from '../../classes/console.class';
+import { ConsoleService } from '../../services/console.service';
+import { GameService } from '../../services/game.service';
+import { GameInfo } from '../../classes/game-info.class';
 
 @Component({
   selector: 'app-add-game',
@@ -18,9 +18,9 @@ export class AddGameComponent implements OnInit {
   maxCompletionDate = new Date;
   isGameCompleted = false;
   addGameForm = this.fb.group({
-    title: ['', Validators.required],
-    year: [undefined, [Validators.required, Validators.min(1970), Validators.max((new Date()).getFullYear())]],
-    consoleId: [undefined, Validators.required],
+    title: ['', [Validators.required, Validators.maxLength(100)]],
+    year: [null, [Validators.required, Validators.min(1970), Validators.max((new Date()).getFullYear())]],
+    consoleId: [null, Validators.required],
     completionDate: [],
     personalNotes: ['']
   });
