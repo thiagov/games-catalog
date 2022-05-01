@@ -43,7 +43,7 @@ export class TestGameService extends GameService {
           completionDate: addNewGameData['completionDate'],
           personalNotes: addNewGameData['personalNotes']
         };
-        observer.next(this.games[0]);
+        observer.next(game);
         observer.complete();
       }, 0);
     });
