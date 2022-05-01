@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.thiagov</groupId>
     <artifactId>gamescatalog</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>gamescatalog</name>
     <description>A simple application to catalog games</description>
     <properties>
